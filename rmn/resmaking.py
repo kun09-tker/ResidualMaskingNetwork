@@ -4,9 +4,9 @@ from resnet import ResNet, BasicBlock
 from masking import masking
 
 class ResMasking(ResNet):
-    def __init__(self, weight_path):
+    def __init__(self, in_channels, num_classes):
         super(ResMasking, self).__init__(
-            block=BasicBlock, layers=[3, 4, 6, 3], in_channels=3, num_classes=1000
+            block=BasicBlock, layers=[3, 4, 6, 3], in_channels=in_channels, num_classes=num_classes
         )
         # state_dict = torch.load('saved/checkpoints/resnet18_rot30_2019Nov05_17.44')['net']
         # state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
@@ -58,10 +58,9 @@ class ResMasking(ResNet):
         return x
 
 def ResidualMaskingNetwork(in_channels=3, num_classes=7, weight_path=""):
-    model = ResMasking(weight_path)
+    model = ResMasking(weight_path, in_channels, num_classes)
     model.fc = nn.Sequential(
         nn.Dropout(0.4),
-        nn.Linear(512, 7)
-        # nn.Linear(512, num_classes)
+        nn.Linear(512, num_classes)
     )
     return model
