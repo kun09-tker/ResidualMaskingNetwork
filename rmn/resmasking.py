@@ -57,8 +57,8 @@ class ResMasking(ResNet):
         x = self.fc(x)
         return x
 
-def ResidualMaskingNetwork(in_channels=3, num_classes=7, weight_path=""):
-    model = ResMasking(weight_path, in_channels, num_classes)
+def ResidualMaskingNetwork(in_channels=3, num_classes=7):
+    model = ResMasking(in_channels, num_classes)
     model.fc = nn.Sequential(
         nn.Dropout(0.4),
         nn.Linear(512, num_classes)
